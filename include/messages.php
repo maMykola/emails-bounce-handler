@@ -164,13 +164,18 @@ function getMessageReport($parts)
     $report = [];
 
     # fetch status from delivery report
-    $delivery_report = parseHeaderLines(splitHeader($parts[PART_DELIVERY_REPORT]));
-    $report['status'] = getHeaderValue($delivery_report, 'status');
-    $report['diagnostic'] = getHeaderValue($delivery_report, 'diagnostic-code');
+    if (array_key_exists(PART_DELIVERY_REPORT, $parts)) {
+        $delivery_report = parseHeaderLines(splitHeader($parts[PART_DELIVERY_REPORT]));
+        $report['status'] = getHeaderValue($delivery_report, 'status');
+        $report['diagnostic'] = getHeaderValue($delivery_report, 'diagnostic-code');
+    }
 
-    $message_headers = parseHeaderLines(splitHeader($parts[PART_ORIGNAL_MESSAGE_HEADERS]));
-    $report['email'] = extractEmail(getHeaderValue($message_headers, 'to'));
-    $report['mail-id'] = getHeaderValue($message_headers, 'x-mail-id');
+    # fetch recipient from original message headers
+    if (array_key_exists(PART_ORIGNAL_MESSAGE_HEADERS, $parts)) {
+        $message_headers = parseHeaderLines(splitHeader($parts[PART_ORIGNAL_MESSAGE_HEADERS]));
+        $report['email'] = extractEmail(getHeaderValue($message_headers, 'to'));
+        $report['mail-id'] = getHeaderValue($message_headers, 'x-mail-id');
+    }
 
     return $report;
 }
