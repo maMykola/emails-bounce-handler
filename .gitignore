@@ -1,0 +1,14 @@
+.DS_Store
+Vagrantfile
+.vagrant/*
+vendor/*
+tests/*
+logs/*
+!logs/.gitkeep
+config/parameters.php
+*~
+*.csv
+*.zip
+*.rara
+*.gz
+*.serial
